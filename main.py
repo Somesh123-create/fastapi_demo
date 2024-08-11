@@ -46,3 +46,24 @@ async def filter_data(item_id: int, sample_query: str, q: str | None = None, sho
             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id."
         })
     return items
+
+
+class Items(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+
+
+
+@app.post("/items/")
+async def create_item(item:Items):
+    return item
+
+
+@app.put("/item_extra/{item_id}")
+async def create_item_with_put(item_id: int, item:Items, q: str | None = None):
+    result = {"item_id": item_id, **item.dict()}
+    if q:
+        result.update({"q":q})
+    return result
